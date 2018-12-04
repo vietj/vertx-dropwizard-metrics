@@ -412,7 +412,7 @@ public class MetricsTest extends MetricsTestBase {
     }).listen(ar -> {
       assertTrue(ar.succeeded());
       AtomicBoolean complete = new AtomicBoolean(false);
-      client.websocket(8080, "localhost", "/blah", socket -> {
+      client.websocket(8080, "localhost", "/blah", onSuccess(socket -> {
         JsonObject metrics = metricsService.getMetricsSnapshot(client);
         assertEquals(1, (int) metrics.getJsonObject("open-websockets").getInteger("count"));
         socket.write(clientMax);
@@ -426,7 +426,7 @@ public class MetricsTest extends MetricsTestBase {
             socket.close();
           }
         });
-      });
+      }));
     });
 
     await();
